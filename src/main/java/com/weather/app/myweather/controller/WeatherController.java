@@ -51,7 +51,7 @@ public class WeatherController {
 						+city+"&appid="+appId+"&units="+unit, WeatherDTO.class);
 		logger.info("url::" + "http://api.openweathermap.org/data/2.5/weather?q="
 						+city+"&appid="+appId+"&units="+unit);
-		logger.info("weather by city response :: "+weather.getMain().getTemp()+","+weather.getWeatherCondition().get(0));
+		logger.info("weather by city response :: "+weather.getMain().getTemp()+", Wind:"+weather.getWeather().get(0).getMain());
 		return weather;
 	}
 }

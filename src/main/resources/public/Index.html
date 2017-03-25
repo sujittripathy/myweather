@@ -51,7 +51,13 @@
 				Maximum Temperature is: {{response.main.temp_max}} <br/>
 				Minimum Temperature is: {{response.main.temp_min}}
             </div>
-          </div>
+			<div class="panel-body">
+				  	Wind Speed: {{response.wind.speed}} <br/>
+				    Degree: {{response.wind.deg}}
+			</div>
+			  <div class="panel-body">
+				Condition : {{response.weather[0].main}}, {{response.weather[0].description}}
+			  </div>
           </div>
          </div>
 		<div >

@@ -1,9 +1,9 @@
 package com.weather.app.myweather.model;
 
-import java.util.ArrayList;
-
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherDTO {
@@ -12,8 +12,10 @@ public class WeatherDTO {
 	private Main main;
 	private String name;
 	private Sys sys;
-	private ArrayList<WeatherCondition> weatherCondition;
-	
+	private List<Weather> weather;
+	private Wind wind;
+
+
 	public WeatherDTO() {
 
 	}
@@ -51,16 +53,21 @@ public class WeatherDTO {
 		this.sys = sys;
 	}
 
-	public ArrayList<WeatherCondition> getWeatherCondition() {
-		return weatherCondition;
+	public Wind getWind() {
+		return wind;
 	}
 
-	@JsonCreator
-	public void setWeatherCondition(ArrayList<WeatherCondition> weatherCondition) {
-		this.weatherCondition = weatherCondition;
+	public void setWind(Wind wind) {
+		this.wind = wind;
 	}
 
+	public List<Weather> getWeather() {
+		return weather;
+	}
 
+	public void setWeather(List<Weather> weather) {
+		this.weather = weather;
+	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	class Coord {
@@ -89,39 +96,45 @@ public class WeatherDTO {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public class Main {
-		private int temp;
-		private int temp_min;
-		private int temp_max;
+	public static class Main {
+		private final float temp;
+		private final float temp_min;
+		private final float temp_max;
+		private final float pressure;
+		private final float humidity;
 
-		public Main() {
-
+		@JsonCreator
+		public Main(@JsonProperty("temp") float temp,
+					@JsonProperty("temp_min") float temp_min,
+					@JsonProperty("temp_max") float temp_max,
+					@JsonProperty("pressure") float pressure,
+					@JsonProperty("humidity")float humidity) {
+			this.temp = temp;
+			this.temp_min = temp_min;
+			this.temp_max = temp_max;
+			this.pressure = pressure;
+			this.humidity = humidity;
 		}
 
-		public int getTemp() {
+		public float getTemp() {
 			return temp;
 		}
 
-		public void setTemp(int temp) {
-			this.temp = temp;
-		}
-
-		public int getTemp_min() {
+		public float getTemp_min() {
 			return temp_min;
 		}
 
-		public void setTemp_min(int temp_min) {
-			this.temp_min = temp_min;
-		}
-
-		public int getTemp_max() {
+		public float getTemp_max() {
 			return temp_max;
 		}
 
-		public void setTemp_max(int temp_max) {
-			this.temp_max = temp_max;
+		public float getPressure() {
+			return pressure;
 		}
 
+		public float getHumidity() {
+			return humidity;
+		}
 	}
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -141,11 +154,15 @@ public class WeatherDTO {
 	}
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	class WeatherCondition{
+	public static class Weather{
 		private String id;
 		private String main;
 		private String description;
 		private String icon;
+
+		public Weather() {
+		}
+
 		public String getId() {
 			return id;
 		}
@@ -169,6 +186,31 @@ public class WeatherDTO {
 		}
 		public void setIcon(String icon) {
 			this.icon = icon;
+		}
+	}
+
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public class Wind{
+		private String speed;
+		private String deg;
+
+		public Wind() {
+		}
+
+		public String getSpeed() {
+			return speed;
+		}
+
+		public void setSpeed(String speed) {
+			this.speed = speed;
+		}
+
+		public String getDeg() {
+			return deg;
+		}
+
+		public void setDeg(String deg) {
+			this.deg = deg;
 		}
 	}
 }
