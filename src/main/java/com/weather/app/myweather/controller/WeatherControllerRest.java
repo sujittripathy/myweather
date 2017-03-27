@@ -78,7 +78,7 @@ public class WeatherControllerRest {
 			p.setCity(userPref.getCity());
 			WeatherDTO w = getWeatherByCity(userPref.getCity(),"imperial");
 			p.setTemp(w.getMain().getTemp());
-			p.setCondition(w.getWeather().get(0).getMain());
+			p.setCondition(w.getWeather().get(0).getDescription());
 			p.setId(userPref.getId());
 			userPrefDTO.add(p);
 		});
