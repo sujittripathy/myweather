@@ -1,19 +1,26 @@
 package com.weather.app.myweather.controller;
 
-import com.weather.app.myweather.model.UserPrefDTO;
-import com.weather.app.myweather.model.WeatherDTO;
-import com.weather.app.myweather.repo.UserPref;
-import com.weather.app.myweather.repo.WeatherRepository;
+import java.util.ArrayList;
+import java.util.List;
+
+/*import com.weather.app.myweather.repo.UserPref;
+import com.weather.app.myweather.repo.WeatherRepository;*/
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.weather.app.myweather.model.UserPrefDTO;
+import com.weather.app.myweather.model.WeatherDTO;
+import com.weather.app.myweather.repo.hsql.UserPref;
+import com.weather.app.myweather.repo.hsql.WeatherRepository;
 
 @RestController
 @RequestMapping
@@ -79,7 +86,7 @@ public class WeatherControllerRest {
 			WeatherDTO w = getWeatherByCity(userPref.getCity(),"imperial");
 			p.setTemp(w.getMain().getTemp());
 			p.setCondition(w.getWeather().get(0).getDescription());
-			p.setId(userPref.getId());
+			p.setId(String.valueOf(userPref.getId()));
 			userPrefDTO.add(p);
 		});
 		return userPrefDTO;
@@ -87,7 +94,7 @@ public class WeatherControllerRest {
 
 	@RequestMapping(value = "/v1/delete/{id}", method = RequestMethod.DELETE)
 	public void removeCity(@PathVariable("id") String id){
-		weatherRepository.delete(id);
+		weatherRepository.delete(Long.valueOf(id));
 		logger.info("id deleted.."+id);
 	}
 }
