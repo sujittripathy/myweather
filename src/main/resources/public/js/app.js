@@ -16,7 +16,7 @@ angular.module("weatherman-module",[])
 				$scope.reset = function(){
                     $scope.response = null;
                     $scope.city = null;
-                    $scope.unit = "imperial";
+                    $scope.unit = "F";
 				}
 
 				$scope.addCity = function(){
