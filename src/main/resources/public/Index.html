@@ -9,7 +9,6 @@
 	<link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.css"/>
 </head>
 <body ng-app="weatherman-module" ng-controller="MainController" ng-init="onload()">
-
 	<div class="navbar navbar-default">
 		<div class="navbar-header">
 			<img src="img/weather.png" height="50px" width="50px"/> <span class="navbar-brand">My Weather</span>
@@ -41,9 +40,9 @@
 			</div>
 			</fieldset>
 		</form>
-		<div class="panel panel-success" ng-show="response">
+		<div class="panel panel-primary" ng-show="response">
 			<div class="panel-heading">
-				<h3 class="panel-title"><b>{{response.name}},{{response.sys.country}}</b> Right Now</h3>
+				<h3 class="panel-title"><b>{{response.name}},{{response.sys.country}}  <img ng-src="http://openweathermap.org/images/flags/{{response.sys.country|lowercase}}.png"/></b> Right Now</h3>
 			</div>
 			<div class="panel-body">
 				<img ng-src="http://openweathermap.org/img/w/{{response.weather[0].icon}}.png"/>
@@ -57,7 +56,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>{{response.main.temp}}<sup>{{unit}}</sup></td>
+							<td><span class="badge">{{response.main.temp}}<sup>{{unit}}</sup></span></td>
 							<td>{{response.main.temp_max}}<sup>{{unit}}</sup></td>
 							<td>{{response.main.temp_min}}<sup>{{unit}}</sup></td>
 						</tr>
@@ -73,7 +72,7 @@
 					</thead>
 					<tbody>
 					<tr>
-						<td>{{response.wind.speed}}</td>
+						<td>{{response.wind.speed}}m/s</td>
 						<td>{{response.wind.deg}}</td>
 						<td>{{response.main.humidity}}</td>
 					</tr>

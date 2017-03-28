@@ -14,7 +14,7 @@ public class UserPref implements Serializable{
 	private static final long serialVersionUID = 8069158605172041216L;
 	
 	@Id
-	@GeneratedValue(strategy =  GenerationType.AUTO)
+	@GeneratedValue(strategy =  GenerationType.IDENTITY)
     private long id;
     private String city;
     

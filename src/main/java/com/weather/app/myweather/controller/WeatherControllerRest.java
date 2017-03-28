@@ -60,7 +60,7 @@ public class WeatherControllerRest {
 	
 	@RequestMapping("/v1/city/{city}/{unit}")
 	public WeatherDTO getWeatherByCity(@PathVariable("city") String city, @PathVariable("unit") String unit){
-		String u = unit.equalsIgnoreCase("C")?"celcius":"imperial";
+		String u = unit.equalsIgnoreCase("C")?"metric":"imperial";
 		WeatherDTO weather = restTemplate.getForObject("http://api.openweathermap.org/data/2.5/weather?q="
 							+city+"&appid="+appId+"&units="+u, WeatherDTO.class);
 
@@ -97,4 +97,31 @@ public class WeatherControllerRest {
 		weatherRepository.delete(Long.valueOf(id));
 		logger.info("id deleted.."+id);
 	}
+
+
+	// Just a dummy method for testing purpose
+	@RequestMapping("/dummy")
+	public Greetings getTest(){
+		return new Greetings("Hello","There!");
+	}
 }
+
+
+class Greetings{
+	private String name;
+	private String value;
+
+	public Greetings(String name, String value) {
+		this.name = name;
+		this.value = value;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public String getValue() {
+		return value;
+	}
+
+}
+

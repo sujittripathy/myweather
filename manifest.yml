@@ -1,6 +1,9 @@
 ---
 applications:
- - name: myweather
-   memory: 1G
-   random-route: true
-   path: target/myweather-0.0.1-SNAPSHOT.jar
+- name: myweather
+  buildpack: https://github.com/cloudfoundry/java-buildpack
+  memory: 1G
+  instances: 1
+  host: myweather
+  domain: cfapps.io
+  path: target/myweather-0.0.1-SNAPSHOT.jar
