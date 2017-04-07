@@ -1,14 +1,13 @@
 package com.weather.app.myweather.repo.mogodb;
 
-
-/*import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;*/
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Component;
 
-//@Document(collection = "user_pref")
+@Document(collection = "user_pref")
+@Component
 public class UserPref {
-  //  @Id
-    private String id;
+    @Id
     private String city;
 
     public String getCity() {
@@ -19,11 +18,4 @@ public class UserPref {
         this.city = city;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

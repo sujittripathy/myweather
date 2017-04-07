@@ -8,7 +8,17 @@ services:
     volumes:
       - /data/db
    # command: mongod
-
+  mysql:
+      image: mysql:latest
+      ports:
+        - "3307:3306"
+      volumes:
+        - /var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: test123
+        MYSQL_DATABASE: myweather
+        MYSQL_USER: test
+        MYSQL_PASSWORD: test123
 #  web:
 #    image: java:openjdk-8u91-jdk
 #    working_dir: /app

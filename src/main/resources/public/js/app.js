@@ -36,12 +36,14 @@ angular.module("weatherman-module",[])
                 }
 
 				$scope.onload = function(){
-		    	    //alert("onload call..");
 		    	    $http.get('/v1/city/all')
-		    	        .then(function(result,error){
+		    	        .then(function successCallback(result){
 		    	                $scope.prefResponse = result.data;
-		    	                console.log(" pref city - "+result.data)
-		    	            })
+		    	                console.log("success .."+result.data)
+		    	        }, function errorCallback(error){
+		    	                console.log("error .."+error)
+		    	        });
+
 				}
 
 
