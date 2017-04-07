@@ -6,117 +6,130 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
 	<script src="js/app.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link>
-	<link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.css"/>
+	<link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.css"/>
 </head>
-<body ng-app="weatherman-module" ng-controller="MainController" ng-init="onload()">
+<body ng-app="weatherman-module" ng-controller="MainController" ng-init="onload()" style="background-image: url('img/sky.jpg');">
 	<div class="navbar navbar-default">
-		<div class="navbar-header">
-			<img src="img/weather.png" height="50px" width="50px"/> <span class="navbar-brand">My Weather</span>
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<img src="img/weather.png" height="50px" width="50px"/> <span class="navbar-brand">My Weather</span>
+			</div>
 		</div>
 	</div>
- 	<div class="container col-md-5">
-		<form class="form-horizontal" name="weatherForm" ng-submit="getWeather(weatherForm.$valid)" novalidate>
-			<fieldset>
-			<div class="form-group">
-				<label for="city" class="col-lg-2 control-label">City</label>
-				<div class="col-lg-5">
-					<input type="text" id="city" class="form-control" ng-model="city" placeholder="Enter city name" required>
+ 	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<form class="form-horizontal" name="weatherForm" ng-submit="getWeather(weatherForm.$valid)" novalidate>
+					<fieldset>
+						<div class="form-group">
+							<label for="city" class="col-lg-3 control-label">City</label>
+							<div class="col-lg-5">
+								<input type="text" id="city" class="form-control" ng-model="city" placeholder="Enter city name" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="city" class="col-lg-3 control-label">Temperature</label>
+							<div class="col-lg-5">
+								<select name="unit" class="form-control" ng-model="unit" ng-init="unit='F'">
+									<option value="C">Celcius</option>
+									<option value="F" selected>Fahrenheit</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-lg-10 col-lg-offset-2">
+								<input type="submit" class="btn btn-primary" ng-disabled="weatherForm.$invalid"/>
+								<input type="button" value="reset" class="btn btn-primary" ng-click="reset()"/>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+				<div class="panel panel-primary" ng-show="response">
+					<div class="panel-heading">
+						<h3 class="panel-title"><b>{{response.name}},{{response.sys.country}}  <img ng-src="http://openweathermap.org/images/flags/{{response.sys.country|lowercase}}.png"/></b> Right Now</h3>
+					</div>
+					<div class="panel-body">
+						<img ng-src="http://openweathermap.org/img/w/{{response.weather[0].icon}}.png"/>
+						<table class="table table-striped table-hover ">
+							<thead>
+							<tr>
+								<th>right now</th>
+								<th>max</th>
+								<th>min</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td><span class="badge">{{response.main.temp}}<sup>{{unit}}</sup></span></td>
+								<td>{{response.main.temp_max}}<sup>{{unit}}</sup></td>
+								<td>{{response.main.temp_min}}<sup>{{unit}}</sup></td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-striped table-hover ">
+							<thead>
+							<tr class="active">
+								<th>wind Speed</th>
+								<th>degree</th>
+								<th>humidity</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>{{response.wind.speed}}m/s</td>
+								<td>{{response.wind.deg}}</td>
+								<td>{{response.main.humidity}}</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-striped table-hover ">
+							<thead>
+							<tr>
+								<th>condition</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr class="active">
+								<td>{{response.weather[0].description | uppercase}}</td>
+							</tr>
+							</tbody>
+						</table>
+						<button class="btn btn-primary btn-sm" ng-click="addCity()"> Add to pref?</button>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="city" class="col-lg-2 control-label">Temperature</label>
-				<div class="col-lg-5">
-					<select name="unit" class="form-control" ng-model="unit" ng-init="unit='F'">
-						<option value="C">Celcius</option>
-						<option value="F" selected>Fahrenheit</option>
-					</select>
+				<div ng-if="prefResponse.length == 0" class="alert alert-dismissible alert-warning">
+					<p>oh no!! No city has been added to preference yet..</p>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-lg-10 col-lg-offset-2">
-					<input type="submit" class="btn btn-primary" ng-disabled="weatherForm.$invalid"/>
-					<input type="button" value="reset" class="btn btn-primary" ng-click="reset()"/>
-				</div>
-			</div>
-			</fieldset>
-		</form>
-		<div class="panel panel-primary" ng-show="response">
-			<div class="panel-heading">
-				<h3 class="panel-title"><b>{{response.name}},{{response.sys.country}}  <img ng-src="http://openweathermap.org/images/flags/{{response.sys.country|lowercase}}.png"/></b> Right Now</h3>
-			</div>
-			<div class="panel-body">
-				<img ng-src="http://openweathermap.org/img/w/{{response.weather[0].icon}}.png"/>
-				<table class="table table-striped table-hover ">
-					<thead>
-						<tr>
-							<th>right now</th>
-							<th>max</th>
-							<th>min</th>
+				<div ng-if="prefResponse.length > 0">
+					<h2>Your Preferred Cities Weather</h2>
+					<table class="table table-striped table-hover">
+						<thead>
+						<tr class="active">
+							<th>City</th>
+							<th>Temp</th>
+							<th>Condition</th>
+							<th></th>
 						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><span class="badge">{{response.main.temp}}<sup>{{unit}}</sup></span></td>
-							<td>{{response.main.temp_max}}<sup>{{unit}}</sup></td>
-							<td>{{response.main.temp_min}}<sup>{{unit}}</sup></td>
+						<tr ng-repeat="p in prefResponse">
+							<th>{{p.city}}</th>
+							<th>{{p.temp}}<sup>F</sup></th>
+							<th>{{p.condition}}</th>
+							<th><button class="btn btn-primary btn-xs" ng-click="removePref(p.city)">Delete</button></th>
 						</tr>
-					</tbody>
-				</table>
-				<table class="table table-striped table-hover ">
-					<thead>
-					<tr class="active">
-						<th>wind Speed</th>
-						<th>degree</th>
-						<th>humidity</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td>{{response.wind.speed}}m/s</td>
-						<td>{{response.wind.deg}}</td>
-						<td>{{response.main.humidity}}</td>
-					</tr>
-					</tbody>
-				</table>
-				<table class="table table-striped table-hover ">
-					<thead>
-					<tr>
-						<th>condition</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr class="active">
-						<td>{{response.weather[0].description | uppercase}}</td>
-					</tr>
-					</tbody>
-				</table>
-				<button class="btn btn-primary btn-sm" ng-click="addCity()"> Add to pref?</button>
+						</thead>
+					</table>
+				</div>
+				<div ng-if="prefResponse == null" class="alert alert-dismissible alert-warning">
+					<strong>Oh snap!</strong> There were some error while fetching preferred cities.
+				</div>
 			</div>
-		</div>
-		<div ng-if="prefResponse.length == 0" class="alert alert-dismissible alert-warning">
-			<p>oh no!! No city has been added to preference yet..</p>
-		</div>
-		<div ng-if="prefResponse.length > 0">
-			<h2>Your Preferred Cities Weather</h2>
-			<table class="table table-striped table-hover">
-				<thead>
-				<tr class="active">
-					<th>City</th>
-					<th>Temp</th>
-					<th>Condition</th>
-					<th></th>
-				</tr>
-				<tr ng-repeat="p in prefResponse">
-					<th>{{p.city}}</th>
-					<th>{{p.temp}}<sup>F</sup></th>
-					<th>{{p.condition}}</th>
-					<th><button class="btn btn-primary btn-xs" ng-click="removePref(p.city)">Delete</button></th>
-				</tr>
-				</thead>
-			</table>
-		</div>
-		<div ng-if="prefResponse == null" class="alert alert-dismissible alert-warning">
-			<strong>Oh snap!</strong> There were some error while fetching preferred cities.
+			<div class="col-md-5">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						Future Panel Enhancement
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
